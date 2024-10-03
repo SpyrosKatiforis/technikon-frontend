@@ -1,0 +1,39 @@
+<div class="container">
+    <h2>Create New Admin</h2>
+    <form #adminForm="ngForm" (ngSubmit)="onSubmit(adminForm)">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" class="form-control" [(ngModel)]="newAdmin.username" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" class="form-control" [(ngModel)]="newAdmin.email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" class="form-control" [(ngModel)]="newAdmin.password" required>
+      </div>
+      <button type="submit" class="btn btn-primary mt-3">Create Admin</button>
+    </form>
+  
+    <hr />
+  
+    <h2>Admin List</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let admin of admins">
+          <td>{{ admin.id }}</td>
+          <td>{{ admin.username }}</td>
+          <td>{{ admin.email }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

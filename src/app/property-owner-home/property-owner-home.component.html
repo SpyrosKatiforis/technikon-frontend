@@ -1,0 +1,46 @@
+<div class="container">
+    <h2>Create New Property Owner</h2>
+    <form #ownerForm="ngForm" (ngSubmit)="onSubmit(ownerForm)">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" class="form-control" [(ngModel)]="newOwner.username" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" class="form-control" [(ngModel)]="newOwner.email" required>
+      </div>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" class="form-control" [(ngModel)]="newOwner.name" required>
+      </div>
+      <div class="form-group">
+        <label for="surname">Surname</label>
+        <input type="text" id="surname" name="surname" class="form-control" [(ngModel)]="newOwner.surname" required>
+      </div>
+      <button type="submit" class="btn btn-primary mt-3">Create Property Owner</button>
+    </form>
+  
+    <hr />
+  
+    <h2>Property Owner List</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Name</th>
+          <th>Surname</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let owner of propertyOwners">
+          <td>{{ owner.id }}</td>
+          <td>{{ owner.username }}</td>
+          <td>{{ owner.email }}</td>
+          <td>{{ owner.name }}</td>
+          <td>{{ owner.surname }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>  
