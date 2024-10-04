@@ -4,21 +4,30 @@ import { Observable } from 'rxjs';
 
 export interface PropertyOwner {
   id: number;
-  vatNumber: string;
   username: string;
   email: string;
   name: string;
   surname: string;
+  vatNumber: string;
   address: string;
   phoneNumber: string;
   password: string;
+}
+
+export interface Property {
+  propertyId: number;
+  address: string;
+  yearOfConstruction: number;
+  propertyType: string;
+  owner?: PropertyOwner; 
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class PropertyOwnerService {
-  private apiUrl = 'http://localhost:8080/TechnikonWebApp-1.0-SNAPSHOT/api/owners'; 
+  private apiUrl = 'http://localhost:8080/TechnikonWebApp-1.0-SNAPSHOT/api/owners';
+  private propertyApiUrl = 'http://localhost:8080/TechnikonWebApp-1.0-SNAPSHOT/api/properties';
 
   constructor(private http: HttpClient) {}
 
@@ -45,5 +54,30 @@ export class PropertyOwnerService {
   // Delete a property owner
   deleteOwner(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  // Login
+  login(username: string, password: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/login`, { username, password });
+  }
+
+  // Fetch all properties of the logged-in owner
+  getProperties(): Observable<Property[]> {
+    return this.http.get<Property[]>(`${this.propertyApiUrl}`);
+  }
+
+  // Add a new property
+  addProperty(property: Property): Observable<Property> {
+    return this.http.post<Property>(`${this.propertyApiUrl}`, property);
+  }
+
+  // Update a property
+  updateProperty(propertyId: number, property: Property): Observable<Property> {
+    return this.http.put<Property>(`${this.propertyApiUrl}/${propertyId}`, property);
+  }
+
+  // Delete a property
+  deleteProperty(propertyId: number): Observable<void> {
+    return this.http.delete<void>(`${this.propertyApiUrl}/${propertyId}`);
   }
 }
