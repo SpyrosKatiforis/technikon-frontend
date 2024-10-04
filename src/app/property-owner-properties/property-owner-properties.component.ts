@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'; 
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';  
 import { CommonModule } from '@angular/common'; 
 import { PropertyOwnerService, PropertyOwner, Property } from '../services/property-owner.service';
@@ -16,23 +16,24 @@ export class PropertyOwnerPropertiesComponent implements OnInit {
     propertyId: 0,
     address: '',
     yearOfConstruction: 2023,
-    propertyType: 'HOUSE', // Default property type
-    owner: {} as PropertyOwner  // Add the owner object here
+    propertyType: 'HOUSE',
+    owner: {} as PropertyOwner
   };
 
-  loggedInOwner!: PropertyOwner;  // Holds the currently logged-in owner
+  loggedInOwner!: PropertyOwner;
 
   constructor(private propertyOwnerService: PropertyOwnerService) {}
 
   ngOnInit(): void {
     this.loadProperties();
-    this.getLoggedInOwner();  // Fetch the logged-in owner's info
+    this.getLoggedInOwner(); // Mock method to get the logged-in owner
   }
 
   getLoggedInOwner(): void {
+    // Assuming owner ID is 1 for demo purposes
     this.propertyOwnerService.getOwnerById(1).subscribe((owner) => {
-      this.loggedInOwner = owner;  // Assuming 1 is the logged-in owner's ID for now
-      this.newProperty.owner = this.loggedInOwner;  // Set the owner for the new property
+      this.loggedInOwner = owner;
+      this.newProperty.owner = this.loggedInOwner;
     });
   }
 
@@ -44,26 +45,49 @@ export class PropertyOwnerPropertiesComponent implements OnInit {
 
   onSubmit(): void {
     if (this.newProperty.propertyId) {
-      // Update existing property
+      // If propertyId is present, update the existing property
       this.propertyOwnerService.updateProperty(this.newProperty.propertyId, this.newProperty).subscribe({
         next: (updatedProperty) => {
           const index = this.properties.findIndex(p => p.propertyId === updatedProperty.propertyId);
           if (index !== -1) {
-            this.properties[index] = updatedProperty;
+            this.properties[index] = updatedProperty; // Update the property in the list
           }
           this.resetForm();
         },
         error: (error) => console.error('Error updating property:', error)
       });
     } else {
-      // Add new property
-      this.newProperty.owner = this.loggedInOwner;  // Ensure the owner is set on property
+      // If no propertyId, create a new property
       this.propertyOwnerService.addProperty(this.newProperty).subscribe((property) => {
         this.properties.push(property);
         this.resetForm();
       });
     }
   }
+  
+
+  deleteProperty(propertyId: number): void {
+    if (!propertyId) {
+      console.error('Property ID is undefined.');
+      return;
+    }
+
+    this.propertyOwnerService.deleteProperty(propertyId).subscribe({
+      next: () => {
+        this.properties = this.properties.filter(property => property.propertyId !== propertyId);
+        console.log('Property deleted successfully');
+      },
+      error: (error) => {
+        console.error('Error deleting property:', error);
+      }
+    });
+  }
+
+  editProperty(property: Property): void {
+    // Set the form fields with the selected property’s data for editing
+    this.newProperty = { ...property }; // Creates a shallow copy of the property object
+  }
+  
 
   resetForm(): void {
     this.newProperty = { 
@@ -71,20 +95,7 @@ export class PropertyOwnerPropertiesComponent implements OnInit {
       address: '', 
       yearOfConstruction: 2023, 
       propertyType: 'HOUSE',
-      owner: this.loggedInOwner  // Keep owner data for future submissions
+      owner: this.loggedInOwner
     };
-  }
-
-  editProperty(property: Property): void {
-    this.newProperty = { ...property };  // Copy the selected property for editing
-  }
-
-  deleteProperty(propertyId: number): void {
-    this.propertyOwnerService.deleteProperty(propertyId).subscribe({
-      next: () => {
-        this.properties = this.properties.filter(property => property.propertyId !== propertyId);
-      },
-      error: (error) => console.error('Error deleting property:', error)
-    });
   }
 }

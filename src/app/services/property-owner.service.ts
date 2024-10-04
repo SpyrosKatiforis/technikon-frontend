@@ -19,7 +19,7 @@ export interface Property {
   address: string;
   yearOfConstruction: number;
   propertyType: string;
-  owner?: PropertyOwner; 
+  owner?: PropertyOwner;
 }
 
 @Injectable({
@@ -71,13 +71,13 @@ export class PropertyOwnerService {
     return this.http.post<Property>(`${this.propertyApiUrl}`, property);
   }
 
-  // Update a property
-  updateProperty(propertyId: number, property: Property): Observable<Property> {
-    return this.http.put<Property>(`${this.propertyApiUrl}/${propertyId}`, property);
-  }
-
   // Delete a property
   deleteProperty(propertyId: number): Observable<void> {
     return this.http.delete<void>(`${this.propertyApiUrl}/${propertyId}`);
   }
+
+  updateProperty(propertyId: number, property: Property): Observable<Property> {
+    return this.http.put<Property>(`${this.propertyApiUrl}/${propertyId}`, property);
+  }
+  
 }
