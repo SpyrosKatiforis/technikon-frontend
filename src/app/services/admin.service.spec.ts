@@ -1,16 +1,27 @@
-import { TestBed } from '@angular/core/testing';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import { AdminService } from './admin.service';
+export interface Admin {
+  id: number;
+  username: string;
+  email: string;
+  password: string;
+}
 
-describe('AdminService', () => {
-  let service: AdminService;
+@Injectable({
+  providedIn: 'root'
+})
+export class AdminService {
+  private apiUrl = 'http://localhost:8080/TechnikonWebApp-1.0-SNAPSHOT/api/admins';
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(AdminService);
-  });
+  constructor(private http: HttpClient) {}
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+  getAllAdmins(): Observable<Admin[]> {
+    return this.http.get<Admin[]>(this.apiUrl);
+  }
+
+  deleteAdmin(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+}

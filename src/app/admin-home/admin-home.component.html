@@ -1,39 +1,49 @@
-<div class="container">
-    <h2>Create New Admin</h2>
-    <form #adminForm="ngForm" (ngSubmit)="onSubmit(adminForm)">
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" class="form-control" [(ngModel)]="newAdmin.username" required>
-      </div>
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" class="form-control" [(ngModel)]="newAdmin.email" required>
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" class="form-control" [(ngModel)]="newAdmin.password" required>
-      </div>
-      <button type="submit" class="btn btn-primary mt-3">Create Admin</button>
-    </form>
-  
-    <hr />
-  
-    <h2>Admin List</h2>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Username</th>
-          <th>Email</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let admin of admins">
-          <td>{{ admin.id }}</td>
-          <td>{{ admin.username }}</td>
-          <td>{{ admin.email }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  
+<div class="container mt-5">
+  <h2>Admin Dashboard</h2>
+
+  <!-- Display all Admins -->
+  <h3>Admins</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let admin of admins">
+        <td>{{ admin.id }}</td>
+        <td>{{ admin.username }}</td>
+        <td>{{ admin.email }}</td>
+        <td><button class="btn btn-danger" (click)="deleteAdmin(admin.id)">Delete</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Display all Property Owners -->
+  <h3>Property Owners</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let owner of propertyOwners">
+        <td>{{ owner.id }}</td>
+        <td>{{ owner.username }}</td>
+        <td>{{ owner.email }}</td>
+        <td>{{ owner.name }}</td>
+        <td>{{ owner.surname }}</td>
+        <td><button class="btn btn-danger" (click)="deleteOwner(owner.id)">Delete</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
